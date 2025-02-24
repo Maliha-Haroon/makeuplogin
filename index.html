@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #000;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .login-container {
+            position: relative;
+            width: 350px;
+            padding: 40px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.8);
+            color: pink;
+            border-radius: 10px;
+            box-shadow: 0 0 25px rgba(255, 105, 180, 0.8);
+            overflow: hidden;
+        }
+        
+        .login-container h2 {
+            margin-bottom: 20px;
+        }
+        
+        .input-box {
+            position: relative;
+            margin: 20px 0;
+        }
+        
+        .input-box input {
+            width: 100%;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: white;
+            font-size: 16px;
+            border-bottom: 2px solid pink;
+        }
+        
+        button {
+            width: 100%;
+            padding: 10px;
+            background: transparent;
+            border: 2px solid pink;
+            color: pink;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        button:hover {
+            background: pink;
+            color: black;
+        }
+        
+        .makeup-rain {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 80px; /* Increased size */
+            height: 80px; /* Increased size */
+            background-size: contain;
+            background-repeat: no-repeat;
+            animation: makeupRain linear infinite;
+            opacity: 0.9;
+        }
+        
+        @keyframes makeupRain {
+            0% { transform: translateY(-10px) scale(1); opacity: 1; }
+            100% { transform: translateY(100vh) scale(0.8); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <div class="input-box">
+            <input type="text" id="username" required>
+            <label>Username</label>
+        </div>
+        <div class="input-box">
+            <input type="password" id="password" required>
+            <label>Password</label>
+        </div>
+        <button id="login-btn">Login</button>
+    </div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const makeupImages = [
+                "lipstick.png",
+                "mascara.png",
+                "foundation.png",
+                "brush.png"
+            ];
+            let makeupElements = [];
+            let isRaining = true;
+
+            function createMakeupRain(count = 20) { // Lower rain intensity
+                if (!isRaining) return;
+                for (let i = 0; i < count; i++) {
+                    let makeup = document.createElement("div");
+                    makeup.classList.add("makeup-rain");
+                    makeup.style.left = Math.random() * 100 + "vw";
+                    makeup.style.animationDuration = Math.random() * 3 + 2 + "s";
+                    makeup.style.backgroundImage = `url(${makeupImages[Math.floor(Math.random() * makeupImages.length)]})`;
+                    document.body.appendChild(makeup);
+                    makeupElements.push(makeup);
+                }
+            }
+
+            function stopMakeupRain() {
+                makeupElements.forEach(el => el.remove());
+                makeupElements = [];
+                isRaining = false;
+            }
+
+            function resumeMakeupRain() {
+                isRaining = true;
+                createMakeupRain(10); // Resume with lower rain effect
+            }
+
+            // Start rain on page load
+            createMakeupRain();
+
+            // Stop rain when username input is focused
+            document.getElementById("username").addEventListener("focus", stopMakeupRain);
+
+            // Keep rain stopped even if focus leaves input
+            document.getElementById("username").addEventListener("blur", function() { isRaining = false; });
+
+            // Resume rain when login button is clicked
+            document.getElementById("login-btn").addEventListener("click", function() {
+                setTimeout(resumeMakeupRain, 2000); // Delay to simulate login process
+            });
+        });
+    </script>
+</body>
+</html>
